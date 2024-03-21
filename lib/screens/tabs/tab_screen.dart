@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gadget_shop/screens/tabs/categories/categories_screen.dart';
 import 'package:gadget_shop/screens/tabs/products/products_screen.dart';
 import 'package:gadget_shop/screens/tabs/profile/profile_screen.dart';
 import 'package:gadget_shop/view_models/tab_view_model.dart';
@@ -13,7 +14,8 @@ class TabScreen extends StatefulWidget {
 
 class _TabScreenState extends State<TabScreen> {
   List<Widget> screens = [
-    ProductScreen(),
+    CategoriesScreen(),
+    ProductsScreen(),
     ProfileScreen(),
   ];
 
@@ -27,6 +29,14 @@ class _TabScreenState extends State<TabScreen> {
           context.read<TabViewModel>().changeIndex(newIndex);
         },
         items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.category),
+            label: "Categories",
+            activeIcon: Icon(
+              Icons.category,
+              color: Colors.green,
+            ),
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.check_box_outline_blank),
             label: "Products",

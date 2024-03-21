@@ -1,33 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:gadget_shop/data/models/product_model.dart';
-import 'package:gadget_shop/view_models/products_view_model.dart';
+import 'package:gadget_shop/data/models/category_model.dart';
+import 'package:gadget_shop/view_models/category_view_model.dart';
 import 'package:provider/provider.dart';
 
-class ProductsScreen extends StatefulWidget {
-  const ProductsScreen({super.key});
+class CategoriesScreen extends StatefulWidget {
+  const CategoriesScreen({super.key});
 
   @override
-  State<ProductsScreen> createState() => _ProductsScreenState();
+  State<CategoriesScreen> createState() => _CategoriesScreenState();
 }
 
-class _ProductsScreenState extends State<ProductsScreen> {
+class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Products"),
+        title: const Text("Categories"),
         actions: [
           IconButton(
             onPressed: () {
-              context.read<ProductsViewModel>().insertProducts(
-                    ProductModel(
-                      price: 12.5,
+              context.read<CategoriesViewModel>().insertCategory(
+                    CategoryModel(
                       imageUrl:
-                          "https://i.ebayimg.com/images/g/IUMAAOSwZGBkTR-K/s-l400.png",
-                      productName: "Nokia 12 80",
+                          "https://static-assets.business.amazon.com/assets/in/24th-jan/705_Website_Blog_Appliances_1450x664.jpg.transform/1450x664/image.jpg",
+                      categoryName: "Maishiy texnikalar",
                       docId: "",
-                      productDescription: "productDescription",
-                      categoryId: "kcggCJzOEz7gH1LQy44x",
                     ),
                     context,
                   );
@@ -36,8 +33,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
           ),
         ],
       ),
-      body: StreamBuilder<List<ProductModel>>(
-        stream: context.read<ProductsViewModel>().listenProducts(),
+      body: StreamBuilder<List<CategoryModel>>(
+        stream: context.read<CategoriesViewModel>().listenCategories(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -45,20 +42,20 @@ class _ProductsScreenState extends State<ProductsScreen> {
             );
           }
           if (snapshot.hasData) {
-            List<ProductModel> list = snapshot.data as List<ProductModel>;
+            List<CategoryModel> list = snapshot.data as List<CategoryModel>;
             return ListView(
               children: [
                 ...List.generate(
                   list.length,
                   (index) {
-                    ProductModel product = list[index];
+                    CategoryModel category = list[index];
                     return ListTile(
                       leading: Image.network(
-                        product.imageUrl,
+                        category.imageUrl,
                         width: 50,
                       ),
-                      title: Text(product.productName),
-                      subtitle: Text(product.docId),
+                      title: Text(category.categoryName),
+                      subtitle: Text(category.docId),
                       trailing: SizedBox(
                         width: 100,
                         child: Row(
@@ -66,22 +63,21 @@ class _ProductsScreenState extends State<ProductsScreen> {
                             IconButton(
                               onPressed: () {
                                 context
-                                    .read<ProductsViewModel>()
-                                    .deleteProduct(product.docId, context);
+                                    .read<CategoriesViewModel>()
+                                    .deleteCategory(category.docId, context);
                               },
                               icon: const Icon(Icons.delete),
                             ),
                             IconButton(
                               onPressed: () {
-                                context.read<ProductsViewModel>().updateProduct(
-                                      ProductModel(
-                                        price: product.price,
+                                context
+                                    .read<CategoriesViewModel>()
+                                    .updateCategory(
+                                      CategoryModel(
                                         imageUrl:
-                                            "https://upload.wikimedia.org/wikipedia/commons/2/2c/NOKIA_1280.jpg",
-                                        productName: "Galaxy",
-                                        docId: product.docId,
-                                        productDescription: "",
-                                        categoryId: product.categoryId,
+                                            "https://dnr.wisconsin.gov/sites/default/files/feature-images/ECycle_Promotion_Manufacturers.jpg",
+                                        categoryName: "Electronics",
+                                        docId: category.docId,
                                       ),
                                       context,
                                     );

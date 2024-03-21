@@ -40,20 +40,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Text(
                             user.uid,
-                            style:
-                                AppTextStyle.interSemiBold.copyWith(fontSize: 24),
+                            style: AppTextStyle.interSemiBold
+                                .copyWith(fontSize: 24),
                           ),
                           SizedBox(height: 12.h),
                           Text(
                             user.email.toString(),
-                            style:
-                                AppTextStyle.interSemiBold.copyWith(fontSize: 24),
+                            style: AppTextStyle.interSemiBold
+                                .copyWith(fontSize: 24),
                           ),
                           SizedBox(height: 12.h),
                           Text(
                             user.displayName.toString(),
-                            style:
-                                AppTextStyle.interSemiBold.copyWith(fontSize: 24),
+                            style: AppTextStyle.interSemiBold
+                                .copyWith(fontSize: 24),
                           ),
                           if (user.photoURL != null)
                             Image.network(

@@ -30,6 +30,7 @@ dependencies:
   provider: ^6.1.2
   #TODO 1
   google_sign_in: ^6.2.1
+  cloud_firestore: ^4.15.9
 
 
 dev_dependencies:
