@@ -28,6 +28,8 @@ dependencies:
   firebase_core: ^2.24.2
   firebase_auth: ^4.17.9
   provider: ^6.1.2
+  #TODO 1
+  google_sign_in: ^6.2.1
 
 
 dev_dependencies:

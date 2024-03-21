@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gadget_shop/screens/routes.dart';
+import 'package:gadget_shop/utils/constants/app_constants.dart';
 import 'package:gadget_shop/utils/size/size_utils.dart';
 import 'package:gadget_shop/utils/styles/app_text_style.dart';
 import 'package:gadget_shop/view_models/auth_view_model.dart';
@@ -114,6 +117,28 @@ class _LoginScreenState extends State<LoginScreen> {
                         "REGISTER",
                         style: AppTextStyle.interSemiBold
                             .copyWith(fontSize: 24, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 60,
+                    width: double.infinity,
+                    margin: const EdgeInsets.all(24),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      onPressed: () {
+                        context.read<AuthViewModel>().signInWithGoogle(context,
+                            Platform.isAndroid ? null : AppConstants.clientID);
+                      },
+                      child: Text(
+                        "LOGIN WITH GOOGLE",
+                        style: AppTextStyle.interSemiBold
+                            .copyWith(fontSize: 16, color: Colors.white),
                       ),
                     ),
                   )

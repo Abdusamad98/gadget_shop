@@ -35,39 +35,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
               : Center(
                   child: Padding(
                     padding: const EdgeInsets.all(24),
-                    child: Column(
-                      children: [
-                        Text(
-                          user.uid,
-                          style:
-                              AppTextStyle.interSemiBold.copyWith(fontSize: 24),
-                        ),
-                        SizedBox(height: 12.h),
-                        Text(
-                          user.email.toString(),
-                          style:
-                              AppTextStyle.interSemiBold.copyWith(fontSize: 24),
-                        ),
-                        SizedBox(height: 12.h),
-                        Text(
-                          user.displayName.toString(),
-                          style:
-                              AppTextStyle.interSemiBold.copyWith(fontSize: 24),
-                        ),
-                        if (user.photoURL != null)
-                          Image.network(
-                            user.photoURL!,
-                            width: 200,
-                            height: 200,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Text(
+                            user.uid,
+                            style:
+                                AppTextStyle.interSemiBold.copyWith(fontSize: 24),
                           ),
-                        IconButton(
-                          onPressed: () {
-                            context.read<AuthViewModel>().updateImageUrl(
-                                "https://www.tenforums.com/attachments/tutorials/146359d1501443008-change-default-account-picture-windows-10-a-user.png");
-                          },
-                          icon: const Icon(Icons.image),
-                        )
-                      ],
+                          SizedBox(height: 12.h),
+                          Text(
+                            user.email.toString(),
+                            style:
+                                AppTextStyle.interSemiBold.copyWith(fontSize: 24),
+                          ),
+                          SizedBox(height: 12.h),
+                          Text(
+                            user.displayName.toString(),
+                            style:
+                                AppTextStyle.interSemiBold.copyWith(fontSize: 24),
+                          ),
+                          if (user.photoURL != null)
+                            Image.network(
+                              user.photoURL!,
+                              width: 200,
+                              height: 200,
+                            ),
+                          IconButton(
+                            onPressed: () {
+                              context.read<AuthViewModel>().updateImageUrl(
+                                  "https://www.tenforums.com/attachments/tutorials/146359d1501443008-change-default-account-picture-windows-10-a-user.png");
+                            },
+                            icon: const Icon(Icons.image),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 )
