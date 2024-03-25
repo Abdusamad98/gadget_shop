@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gadget_shop/data/models/product_model.dart';
+import 'package:gadget_shop/services/local_notification_service.dart';
 import 'package:gadget_shop/view_models/products_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -11,97 +12,63 @@ class ProductsScreen extends StatefulWidget {
 }
 
 class _ProductsScreenState extends State<ProductsScreen> {
+  int id = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Products"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              context.read<ProductsViewModel>().insertProducts(
-                    ProductModel(
-                      price: 12.5,
-                      imageUrl:
-                          "https://i.ebayimg.com/images/g/IUMAAOSwZGBkTR-K/s-l400.png",
-                      productName: "Nokia 12 80",
-                      docId: "",
-                      productDescription: "productDescription",
-                      categoryId: "kcggCJzOEz7gH1LQy44x",
-                    ),
-                    context,
-                  );
-            },
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
-      body: StreamBuilder<List<ProductModel>>(
-        stream: context.read<ProductsViewModel>().listenProducts(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text(snapshot.error.toString()),
-            );
-          }
-          if (snapshot.hasData) {
-            List<ProductModel> list = snapshot.data as List<ProductModel>;
-            return ListView(
-              children: [
-                ...List.generate(
-                  list.length,
-                  (index) {
-                    ProductModel product = list[index];
-                    return ListTile(
-                      leading: Image.network(
-                        product.imageUrl,
-                        width: 50,
+        appBar: AppBar(
+          title: const Text("Products"),
+          actions: [
+            IconButton(
+              onPressed: () {
+                context.read<ProductsViewModel>().insertProducts(
+                      ProductModel(
+                        price: 12.5,
+                        imageUrl:
+                            "https://i.ebayimg.com/images/g/IUMAAOSwZGBkTR-K/s-l400.png",
+                        productName: "Nokia 12 80",
+                        docId: "",
+                        productDescription: "productDescription",
+                        categoryId: "kcggCJzOEz7gH1LQy44x",
                       ),
-                      title: Text(product.productName),
-                      subtitle: Text(product.docId),
-                      trailing: SizedBox(
-                        width: 100,
-                        child: Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                context
-                                    .read<ProductsViewModel>()
-                                    .deleteProduct(product.docId, context);
-                              },
-                              icon: const Icon(Icons.delete),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                context.read<ProductsViewModel>().updateProduct(
-                                      ProductModel(
-                                        price: product.price,
-                                        imageUrl:
-                                            "https://upload.wikimedia.org/wikipedia/commons/2/2c/NOKIA_1280.jpg",
-                                        productName: "Galaxy",
-                                        docId: product.docId,
-                                        productDescription: "",
-                                        categoryId: product.categoryId,
-                                      ),
-                                      context,
-                                    );
-                              },
-                              icon: const Icon(Icons.edit),
-                            ),
-                          ],
-                        ),
-                      ),
+                      context,
                     );
-                  },
-                ),
-              ],
-            );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
-    );
+              },
+              icon: const Icon(Icons.add),
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            TextButton(
+              child: const Text("Show Notification"),
+              onPressed: () {
+                LocalNotificationService().showNotification(
+                  title: "Galaxy 12 nomli maxsulot qo'shildi!",
+                  body: "Maxsulot haqida ma'lumot olishingiz mumkin.",
+                  id: id,
+                );
+                id++;
+              },
+            ),
+            TextButton(
+              child: const Text("Cancel Notification"),
+              onPressed: () {
+                LocalNotificationService().cancelNotification(3);
+              },
+            ),
+            TextButton(
+              child: const Text("Show Periodic Notification"),
+              onPressed: () {
+                LocalNotificationService().scheduleNotification(
+                  title: "Galaxy 12 nomli maxsulot qo'shildi!",
+                  body: "Maxsulot haqida ma'lumot olishingiz mumkin.",
+                  delayedTime: 2,
+                );
+              },
+            ),
+          ],
+        ));
   }
 }

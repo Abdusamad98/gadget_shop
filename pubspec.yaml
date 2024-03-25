@@ -31,6 +31,8 @@ dependencies:
   #TODO 1
   google_sign_in: ^6.2.1
   cloud_firestore: ^4.15.9
+  flutter_local_notifications: ^17.0.0
+  flutter_timezone: ^1.0.8
 
 
 dev_dependencies:
