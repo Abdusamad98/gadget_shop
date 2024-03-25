@@ -1,11 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:gadget_shop/screens/auth/login_screen.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:gadget_shop/screens/tabs/profile/profile_screen.dart';
+import 'dart:async';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+
+Future<void> configureLocalTimeZone() async {
+  tz.initializeTimeZones();
+  final String timeZoneName = await FlutterTimezone.getLocalTimezone();
+  tz.setLocalLocation(tz.getLocation(timeZoneName));
+}
 class LocalNotificationService {
   static final LocalNotificationService localNotificationService =
       LocalNotificationService._();
@@ -45,7 +51,7 @@ class LocalNotificationService {
       print(notification.payload);
     });
 
-    final bool? result = await flutterLocalNotificationsPlugin
+    await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
@@ -89,22 +95,21 @@ class LocalNotificationService {
         title,
         body,
         NotificationDetails(
-          android: AndroidNotificationDetails(
-            androidNotificationChannel.id,
-            androidNotificationChannel.name,
-            priority: Priority.max,
-            playSound: true,
-            icon: "app_icon",
-            showProgress: true,
-            largeIcon: const DrawableResourceAndroidBitmap('app_icon'),
-          ),
-          iOS: DarwinNotificationDetails(
-            subtitle: title,
-            presentAlert: true,
-            presentSound:true,
-            interruptionLevel: InterruptionLevel.active,
-          )
-        ),
+            android: AndroidNotificationDetails(
+              androidNotificationChannel.id,
+              androidNotificationChannel.name,
+              priority: Priority.max,
+              playSound: true,
+              icon: "app_icon",
+              showProgress: true,
+              largeIcon: const DrawableResourceAndroidBitmap('app_icon'),
+            ),
+            iOS: DarwinNotificationDetails(
+              subtitle: title,
+              presentAlert: true,
+              presentSound: true,
+              interruptionLevel: InterruptionLevel.active,
+            )),
         payload: "news_screen");
     debugPrint("CURRENT NOTIFICATION ID:$id");
   }
@@ -113,33 +118,19 @@ class LocalNotificationService {
     required String title,
     required String body,
     required int delayedTime,
-  }) {
-    int id = DateTime.now().millisecond;
-
-    print("TIME ${DateTime.now()}");
-    tz.TZDateTime tzDateTime = tz.TZDateTime.now(tz.local)
-        .add(Duration(seconds: 5 * 60 * 60 + delayedTime + 5));
-    print(tzDateTime.toString());
-    flutterLocalNotificationsPlugin.zonedSchedule(
-      123764,
-      title,
-      body,
-      tzDateTime,
-      NotificationDetails(
-        android: AndroidNotificationDetails(
-          androidNotificationChannel.id,
-          androidNotificationChannel.name,
-          priority: Priority.max,
-          playSound: true,
-          icon: "app_icon",
-          showProgress: true,
-          largeIcon: const DrawableResourceAndroidBitmap('app_icon'),
-        ),
-      ),
-      payload: "SCHEADULED NOTIFICATION PAYLOAD DATA ID:$id",
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-    );
+  }) async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+        123,
+        'scheduled alarm clock title',
+        'scheduled alarm clock body',
+        tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+        const NotificationDetails(
+            android: AndroidNotificationDetails(
+                'alarm_clock_channel', 'Alarm Clock Channel',
+                channelDescription: 'Alarm Clock Notification')),
+        androidScheduleMode: AndroidScheduleMode.alarmClock,
+        uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime);
   }
 
   void showPeriodicNotification({

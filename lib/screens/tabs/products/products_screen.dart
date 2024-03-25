@@ -64,7 +64,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 LocalNotificationService().scheduleNotification(
                   title: "Galaxy 12 nomli maxsulot qo'shildi!",
                   body: "Maxsulot haqida ma'lumot olishingiz mumkin.",
-                  delayedTime: 2,
+                  delayedTime: 5,
                 );
               },
             ),

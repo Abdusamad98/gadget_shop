@@ -11,7 +11,7 @@ import 'services/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await configureLocalTimeZone();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
