@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:gadget_shop/screens/tabs/profile/profile_screen.dart';
+import 'package:gadget_shop/screens/push_notifications_screen.dart';
 import 'dart:async';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-
 
 Future<void> configureLocalTimeZone() async {
   tz.initializeTimeZones();
   final String timeZoneName = await FlutterTimezone.getLocalTimezone();
   tz.setLocalLocation(tz.getLocation(timeZoneName));
 }
+
 class LocalNotificationService {
   static final LocalNotificationService localNotificationService =
       LocalNotificationService._();
@@ -45,7 +45,7 @@ class LocalNotificationService {
       if (notification.payload != null) {
         Navigator.push(navigatorKey.currentContext!,
             MaterialPageRoute(builder: (context) {
-          return ProfileScreen();
+          return PushNotificationScreen();
         }));
       }
       print(notification.payload);
@@ -130,7 +130,7 @@ class LocalNotificationService {
                 channelDescription: 'Alarm Clock Notification')),
         androidScheduleMode: AndroidScheduleMode.alarmClock,
         uiLocalNotificationDateInterpretation:
-        UILocalNotificationDateInterpretation.absoluteTime);
+            UILocalNotificationDateInterpretation.absoluteTime);
   }
 
   void showPeriodicNotification({

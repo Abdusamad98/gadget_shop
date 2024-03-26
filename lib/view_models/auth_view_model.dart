@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gadget_shop/screens/routes.dart';
@@ -31,6 +33,9 @@ class AuthViewModel extends ChangeNotifier {
         if (userCredential.user != null) {
           await FirebaseAuth.instance.currentUser!.updateDisplayName(username);
         }
+
+        _addNewUserToList(userCredential);
+
         _notify(false);
         if (!context.mounted) return;
         Navigator.pushReplacementNamed(context, RouteNames.tabRoute);
@@ -114,7 +119,8 @@ class AuthViewModel extends ChangeNotifier {
   }
 
 //TODO 6
-  Future<void> signInWithGoogle(BuildContext context, [String? clientId]) async {
+  Future<void> signInWithGoogle(BuildContext context,
+      [String? clientId]) async {
     // Trigger the authentication flow
     _notify(true);
 
@@ -140,8 +146,22 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
-//
-// verifyEmail(){
-//   FirebaseAuth.instance.currentUser.sendEmailVerification();
-// }
+  _addNewUserToList(UserCredential userCredential) async {
+    String? fcmToken = await FirebaseMessaging.instance.getToken();
+    var user =
+        await FirebaseFirestore.instance.collection(AppConstants.users).add({
+      "user_id": userCredential.user != null ? userCredential.user!.uid : "",
+      "user_name":
+          userCredential.user != null ? userCredential.user!.displayName : "",
+      "e_mail": userCredential.user != null ? userCredential.user!.email : "",
+      "image_url":
+          userCredential.user != null ? userCredential.user!.photoURL : "",
+      "fcm_token": fcmToken ?? "",
+      "user_doc_id": "",
+    });
+    await FirebaseFirestore.instance
+        .collection(AppConstants.users)
+        .doc(user.id)
+        .update({"user_doc_id": user.id});
+  }
 }

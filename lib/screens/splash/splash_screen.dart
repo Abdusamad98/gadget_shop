@@ -28,7 +28,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     _init();
-
     super.initState();
   }
 
@@ -40,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return const Scaffold(
       body: Center(
         child: Icon(
-          Icons.access_time_filled_outlined,
+          Icons.notifications,
           color: Colors.green,
           size: 200,
         ),

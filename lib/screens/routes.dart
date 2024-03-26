@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gadget_shop/screens/auth/login_screen.dart';
 import 'package:gadget_shop/screens/auth/register_screen.dart';
+import 'package:gadget_shop/screens/push_notifications_screen.dart';
 import 'package:gadget_shop/screens/splash/splash_screen.dart';
-import 'package:gadget_shop/screens/tabs/tab_screen.dart';
 
 class AppRoutes {
   static Route generateRoute(RouteSettings settings) {
@@ -11,7 +11,7 @@ class AppRoutes {
         return navigate(const SplashScreen());
 
       case RouteNames.tabRoute:
-        return navigate(const TabScreen());
+        return navigate(const PushNotificationScreen());
 
       case RouteNames.loginRoute:
         return navigate(const LoginScreen());
