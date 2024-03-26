@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:gadget_shop/data/models/product_model.dart';
 import 'package:gadget_shop/services/local_notification_service.dart';
@@ -13,6 +14,39 @@ class ProductsScreen extends StatefulWidget {
 
 class _ProductsScreenState extends State<ProductsScreen> {
   int id = 1;
+
+  _init() async {
+    FirebaseMessaging.instance.subscribeToTopic("news");
+
+    FirebaseMessaging.instance.unsubscribeFromTopic("news");
+
+    String? fcmTome = await FirebaseMessaging.instance.getToken();
+    debugPrint("FCM TOKEN:$fcmTome");
+    FirebaseMessaging.onMessage.listen((RemoteMessage remoteMessage) {
+      if (remoteMessage.notification != null) {
+        LocalNotificationService().showNotification(
+          title: remoteMessage.notification!.title!,
+          body: remoteMessage.notification!.body!,
+          id: id,
+        );
+      }
+      debugPrint(
+          "FOREGROUND MODE DA PUSH NOTIFICATION KELDI:${remoteMessage.notification!.title}");
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage remoteMessage) {
+      if (remoteMessage.notification != null) {
+        debugPrint(
+            "TERMINATED MODE DA PUSH NOTIFICATION KELDI:${remoteMessage.notification!.title}");
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    _init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,35 +74,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
           ],
         ),
         body: Column(
-          children: [
-            TextButton(
-              child: const Text("Show Notification"),
-              onPressed: () {
-                LocalNotificationService().showNotification(
-                  title: "Galaxy 12 nomli maxsulot qo'shildi!",
-                  body: "Maxsulot haqida ma'lumot olishingiz mumkin.",
-                  id: id,
-                );
-                id++;
-              },
-            ),
-            TextButton(
-              child: const Text("Cancel Notification"),
-              onPressed: () {
-                LocalNotificationService().cancelNotification(3);
-              },
-            ),
-            TextButton(
-              child: const Text("Show Periodic Notification"),
-              onPressed: () {
-                LocalNotificationService().scheduleNotification(
-                  title: "Galaxy 12 nomli maxsulot qo'shildi!",
-                  body: "Maxsulot haqida ma'lumot olishingiz mumkin.",
-                  delayedTime: 5,
-                );
-              },
-            ),
-          ],
+          children: [],
         ));
   }
 }
