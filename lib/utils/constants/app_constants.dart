@@ -10,4 +10,5 @@ class AppConstants {
 
   static String categories = "categories";
   static String products = "products";
+  static String users = "users";
 }

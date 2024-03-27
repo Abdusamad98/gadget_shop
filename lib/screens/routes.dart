@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gadget_shop/screens/auth/login_screen.dart';
 import 'package:gadget_shop/screens/auth/register_screen.dart';
 import 'package:gadget_shop/screens/splash/splash_screen.dart';
+import 'package:gadget_shop/screens/tabs/categories/add_category_screen.dart';
 import 'package:gadget_shop/screens/tabs/tab_screen.dart';
 
 class AppRoutes {
@@ -18,6 +19,8 @@ class AppRoutes {
 
       case RouteNames.registerRoute:
         return navigate(const RegisterScreen());
+      case RouteNames.categoryAddScreen:
+        return navigate(const AddCategoryScreen());
 
       default:
         return navigate(
@@ -40,4 +43,5 @@ class RouteNames {
   static const String tabRoute = "/tab_route";
   static const String loginRoute = "/login_route";
   static const String registerRoute = "/register_route";
+  static const String categoryAddScreen = "/add_category_screen";
 }

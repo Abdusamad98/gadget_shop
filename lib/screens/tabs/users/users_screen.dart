@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:gadget_shop/data/models/product_model.dart';
-import 'package:gadget_shop/view_models/products_view_model.dart';
+import 'package:gadget_shop/data/models/user_model.dart';
+import 'package:gadget_shop/view_models/users_view_model.dart';
 import 'package:provider/provider.dart';
 
-class ProductsScreen extends StatefulWidget {
-  const ProductsScreen({super.key});
+class UsersScreen extends StatefulWidget {
+  const UsersScreen({super.key});
 
   @override
-  State<ProductsScreen> createState() => _ProductsScreenState();
+  State<UsersScreen> createState() => _UsersScreenState();
 }
 
-class _ProductsScreenState extends State<ProductsScreen> {
+class _UsersScreenState extends State<UsersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Products"),
+        title: const Text("Users"),
         actions: [
           IconButton(
             onPressed: () {},
@@ -23,8 +23,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
           ),
         ],
       ),
-      body: StreamBuilder<List<ProductModel>>(
-        stream: context.read<ProductsViewModel>().listenProducts(),
+      body: StreamBuilder<List<UserModel>>(
+        stream: context.read<UsersViewModel>().listenUsers(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -32,20 +32,20 @@ class _ProductsScreenState extends State<ProductsScreen> {
             );
           }
           if (snapshot.hasData) {
-            List<ProductModel> list = snapshot.data as List<ProductModel>;
+            List<UserModel> list = snapshot.data as List<UserModel>;
             return ListView(
               children: [
                 ...List.generate(
                   list.length,
                   (index) {
-                    ProductModel product = list[index];
+                    UserModel user = list[index];
                     return ListTile(
                       leading: Image.network(
-                        product.imageUrl,
+                        user.imageUrl,
                         width: 50,
                       ),
-                      title: Text(product.productName),
-                      subtitle: Text(product.docId),
+                      title: Text(user.username),
+                      subtitle: Text(user.userDocId),
                       trailing: SizedBox(
                         width: 100,
                         child: Row(
@@ -53,8 +53,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                             IconButton(
                               onPressed: () {
                                 context
-                                    .read<ProductsViewModel>()
-                                    .deleteProduct(product.docId, context);
+                                    .read<UsersViewModel>()
+                                    .deleteUser(user.userDocId, context);
                               },
                               icon: const Icon(Icons.delete),
                             ),

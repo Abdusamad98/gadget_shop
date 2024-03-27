@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gadget_shop/data/models/category_model.dart';
+import 'package:gadget_shop/screens/routes.dart';
 import 'package:gadget_shop/view_models/category_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -19,15 +20,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              context.read<CategoriesViewModel>().insertCategory(
-                    CategoryModel(
-                      imageUrl:
-                          "https://static-assets.business.amazon.com/assets/in/24th-jan/705_Website_Blog_Appliances_1450x664.jpg.transform/1450x664/image.jpg",
-                      categoryName: "Maishiy texnikalar",
-                      docId: "",
-                    ),
-                    context,
-                  );
+              Navigator.pushNamed(context, RouteNames.categoryAddScreen);
             },
             icon: const Icon(Icons.add),
           ),
@@ -64,7 +57,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                               onPressed: () {
                                 context
                                     .read<CategoriesViewModel>()
-                                    .deleteCategory(category.docId, context);
+                                    .deleteCategory(category, context);
                               },
                               icon: const Icon(Icons.delete),
                             ),
@@ -74,6 +67,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                     .read<CategoriesViewModel>()
                                     .updateCategory(
                                       CategoryModel(
+                                        storagePath: "",
                                         imageUrl:
                                             "https://dnr.wisconsin.gov/sites/default/files/feature-images/ECycle_Promotion_Manufacturers.jpg",
                                         categoryName: "Electronics",

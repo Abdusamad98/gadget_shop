@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:gadget_shop/data/models/category_model.dart';
 import 'package:gadget_shop/utils/constants/app_constants.dart';
@@ -32,7 +33,8 @@ class CategoriesViewModel extends ChangeNotifier {
             .toList(),
       );
 
-  insertCategory(CategoryModel categoryModel, BuildContext context) async {
+  Future<void> insertCategory(
+      CategoryModel categoryModel, BuildContext context) async {
     try {
       _notify(true);
       var cf = await FirebaseFirestore.instance
@@ -72,14 +74,14 @@ class CategoriesViewModel extends ChangeNotifier {
     }
   }
 
-  deleteCategory(String docId, BuildContext context) async {
+  deleteCategory(CategoryModel categoryModel, BuildContext context) async {
     try {
       _notify(true);
       await FirebaseFirestore.instance
           .collection(AppConstants.categories)
-          .doc(docId)
+          .doc(categoryModel.docId)
           .delete();
-
+   FirebaseStorage.instance.ref().child(categoryModel.storagePath).delete();
       _notify(false);
     } on FirebaseException catch (error) {
       if (!context.mounted) return;

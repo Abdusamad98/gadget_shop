@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gadget_shop/screens/tabs/categories/categories_screen.dart';
 import 'package:gadget_shop/screens/tabs/products/products_screen.dart';
-import 'package:gadget_shop/screens/tabs/profile/profile_screen.dart';
+import 'package:gadget_shop/screens/tabs/users/users_screen.dart';
 import 'package:gadget_shop/view_models/tab_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +16,7 @@ class _TabScreenState extends State<TabScreen> {
   List<Widget> screens = [
     CategoriesScreen(),
     ProductsScreen(),
-    ProfileScreen(),
+    UsersScreen(),
   ];
 
   @override
@@ -46,10 +46,10 @@ class _TabScreenState extends State<TabScreen> {
             ),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Profile",
+            icon: Icon(Icons.people),
+            label: "Users",
             activeIcon: Icon(
-              Icons.person,
+              Icons.people,
               color: Colors.green,
             ),
           )
